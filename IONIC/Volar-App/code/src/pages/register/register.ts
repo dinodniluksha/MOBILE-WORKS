@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angul
 import { AuthProvider } from '../../providers/auth/auth';
 import {LoginPage } from '../login/login';
 
+import {WelcomePage} from '../welcome/welcome';
 /**
  * Generated class for the RegisterPage page.
  *
@@ -23,7 +24,10 @@ export class RegisterPage {
               public alertCrtl: AlertController 
               ) {  }
 
-              signup(FormReg){
+              Usignup(FormReg){
+
+                window.localStorage.setItem('user', FormReg.value);
+
                 this.auth.signup(FormReg.value).subscribe(data =>{
                   if( data.token == 0){
                     //FormReg.name = '';
@@ -50,16 +54,22 @@ export class RegisterPage {
                     this.navCtrl.setRoot(LoginPage);
                   }
                 })
-                console.log(FormReg);
+
+                console.log(FormReg.value);
+                console.log(window.localStorage.getItem('user'));
               }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterPage');
   }
+
+
   goToWelcomePage(){
     this.navCtrl.pop();
   }
-  register(){
-    this.navCtrl.pop();
+
+  gotowelcome(){
+    this.navCtrl.setRoot(WelcomePage);
   }
+ 
 }

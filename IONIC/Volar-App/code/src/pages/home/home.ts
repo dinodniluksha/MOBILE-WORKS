@@ -25,7 +25,9 @@ export class HomePage {
 
 data_n:string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthProvider)
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams, 
+              private auth: AuthProvider)
    {
     this.auth.private().subscribe(data => {
       this.data_n = data.name;

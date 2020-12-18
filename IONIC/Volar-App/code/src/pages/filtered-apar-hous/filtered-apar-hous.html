@@ -1,0 +1,33 @@
+<!--
+  Generated template for the FilteredAparHousPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Filtered Apar&Hous Page</ion-title>
+
+    <ion-buttons end>
+      <button (click)="goToHomePage()" ion-button>Back to Home</button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+ 
+
+<ion-card *ngFor = "let data_p of data_ps;" >
+    <ion-item>{{data_p.category}} ID : {{data_p.Aid}}</ion-item> 
+    <ion-item> Name : {{data_p.apartment_name}}</ion-item>
+    <ion-item>Address : {{data_p.apartment_address}}</ion-item> 
+    <ion-item>Contact : {{data_p.apartment_contact}}</ion-item> 
+   <p><button (click)="goToBookingPage(data_p.Aid, data_p.category)" ion-button>Book</button></p>
+</ion-card>
+
+
+</ion-content>

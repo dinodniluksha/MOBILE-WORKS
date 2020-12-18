@@ -7,16 +7,40 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>BanquetHalls_Matara</ion-title>
+    <ion-title>Banquet Halls</ion-title>
   </ion-navbar>
 
 </ion-header>
 
+<ion-content>
 
-<ion-content padding>
-  <ion-list no-lines>
-      <ion-item *ngFor = "let data_p of data_ps;">
-        {{data_p.id}} {{data_p.name}}
-      </ion-item>
-  </ion-list>
+<ion-card-content>
+  <ion-card>
+  <form #FormFilter="ngForm" (ngSubmit)="search(FormFilter)">
+
+    <ion-item>
+      <ion-label floating>Location</ion-label>
+      <ion-input [(ngModel)]="FormFilter.location" name="location" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>From</ion-label>
+      <ion-input [(ngModel)]="FormFilter.sfrom" name="sfrom" type="date" required ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>To</ion-label>
+      <ion-input [(ngModel)]="FormFilter.sto" name="sto" type="date" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <button type="submit" full ion-button>Search</button>
+    </ion-item>
+
+  </form>
+
+</ion-card>
+</ion-card-content>
+
+
 </ion-content>

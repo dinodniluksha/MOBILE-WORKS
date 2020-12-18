@@ -8,6 +8,11 @@
 
   <ion-navbar>
     <ion-title>Signup</ion-title>
+
+    <ion-buttons end>
+      <button (click)="gotowelcome()" ion-button>Back</button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -15,7 +20,7 @@
 <ion-content class="background">
  <ion-card>
   <ion-card-content>
-    <form #FormReg="ngForm" (ngSubmit)="signup(FormReg)" >
+    <form #FormReg="ngForm" (ngSubmit)="Usignup(FormReg)" >
     
       <ion-item>
         <ion-label floating>Name</ion-label>
@@ -49,7 +54,7 @@
       </ion-item>
   
       <ion-item>
-        <button type="submit" full ion-button>SignUp</button>
+        <button  [disabled]="!FormReg.form.valid" type="submit" full ion-button>SignUp</button>
       </ion-item>
   
     </form>

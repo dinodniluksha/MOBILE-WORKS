@@ -3,6 +3,8 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { RegisterPage } from '../register/register';
 import { HomePage } from '../home/home';
 import { AuthProvider } from '../../providers/auth/auth';
+ 
+import {WelcomePage} from '../welcome/welcome';
 
 //import { HTTP } from '@ionic-native/http';
 
@@ -27,10 +29,11 @@ export class LoginPage {
   // constructor(private http: HTTP,public navCtrl: NavController, public navParams: NavParams) {
   //}
   constructor(
-    public navCtrl: NavController, public navParams: NavParams,
-    private auth: AuthProvider,
-    public alertCrtl: AlertController
-    ) {}
+              public navCtrl: NavController, 
+              public navParams: NavParams,
+              private auth: AuthProvider,
+              public alertCrtl: AlertController
+    ) { }
 
     login(FormLogin){
       this.auth.login(FormLogin.value).subscribe(data =>{
@@ -49,7 +52,7 @@ export class LoginPage {
         {
           this.navCtrl.setRoot(HomePage);
         }
-      })
+      });
     }
   
 
@@ -63,6 +66,9 @@ export class LoginPage {
     this.navCtrl.push(RegisterPage);
   }
   
+  gotowelcome(){
+    this.navCtrl.setRoot(WelcomePage);
+  }
 
   
 }
