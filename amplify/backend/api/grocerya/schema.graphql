@@ -1,0 +1,152 @@
+enum ShopType {
+    GROCERY
+    GAS
+    MEATSHOP
+    PHARMACY
+    RESTAURANT
+    FOOD
+}
+
+enum WeekDays {
+    SUNDAY
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+}
+
+type ShopOrder
+    @model(queries: null)
+    @key(name: "byShop", fields: ["shopID", "orderID"])
+    @key(name: "byOrder", fields: ["orderID", "shopID"])
+    @auth(rules: [{ allow: owner, operations: [create] }]) {
+    id: ID!
+    orderID: ID!
+    shopID: ID!
+    order: Order! @connection(fields: ["orderID"])
+    shop: Shop! @connection(fields: ["shopID"])
+}
+
+type Order @model @key(name: "byUserOrder", fields: ["userID"]) @auth(rules: [{ allow: owner, operations: [create] }]) {
+    id: ID!
+    userID: ID!
+    type: [ShopType!]
+    state: String!
+    note: String!
+    billAmount: Int
+    deliveryRequested: Int!
+    deliveryAccepted: Int!
+    deliveryState: Int!
+    pickupTime: String!
+    gallery: [Gallery]! @connection(keyName: "byOrderGallery", fields: ["id"])
+    deliveryTime: String!
+    rating: Rating @connection
+    shops: [ShopOrder] @connection(keyName: "byOrder", fields: ["id"])
+    deliveryLocation: Address @connection
+}
+
+type Shop @model @searchable @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    name: String!
+    type: String!
+    mobileNumber: String!
+    email: String!
+    deliveryCharge: Int!
+    registrationId: String
+    nic: String
+    deliveryAccepted: Int!
+    profilePicture: String
+    gallery: [Gallery] @connection(keyName: "byShopGallery", fields: ["id"])
+    rating: [Rating] @connection(keyName: "byShopRating", fields: ["id"])
+    openingHours: [OpeningHours] @connection(keyName: "byShopOpeningHour", fields: ["id"])
+    orders: [ShopOrder] @connection(keyName: "byShop", fields: ["id"])
+    address: Address @connection
+    location: Location
+}
+
+type User @model @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    name: String!
+    address: String!
+    mobileNumber: String!
+    ratings: [Rating] @connection(keyName: "byUserRating", fields: ["id"])
+    orders: [Order] @connection(keyName: "byUserOrder", fields: ["id"])
+    Address: [Address] @connection(keyName: "byUserAddress", fields: ["id"])
+}
+
+type Gallery
+    @model
+    @key(name: "byShopGallery", fields: ["shopGalleryID"])
+    @key(name: "byOrderGallery", fields: ["shopGalleryID"])
+    @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    shopGalleryID: ID
+    orderGalleryID: ID
+    url: String!
+}
+
+type Rating
+    @model
+    @key(name: "byShopRating", fields: ["shopRatingID"])
+    @key(name: "byUserRating", fields: ["userRatingID"])
+    @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    shopRatingID: ID
+    userRatingID: ID
+    Star5: Int!
+    Star4: Int!
+    Star3: Int!
+    Star2: Int!
+    Star1: Int!
+    overollRating: Int!
+    testimonial: Testimonial @connection
+}
+
+type Testimonial @model @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    comment: String!
+}
+
+type OpeningHours
+    @model
+    @key(name: "byShopOpeningHour", fields: ["shopOpeningHourID"])
+    @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    shopOpeningHourID: ID!
+    day: WeekDays!
+    to: String!
+    from: String!
+}
+
+type Location {
+    lat: Float
+    lon: Float
+}
+
+type Address
+    @model
+    @key(name: "byUserAddress", fields: ["userID"])
+    @auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+    id: ID!
+    userID: ID
+    mainAddress: String!
+    additionalAdress: String
+    type: String!
+    location: Location!
+}
+
+type ShopConnection {
+    items: [Shop]
+    nextToken: String
+}
+
+input LocationInput {
+    lat: Float
+    lon: Float
+}
+
+type Query {
+    nearbyShops(location: LocationInput!, km: Int): ShopConnection
+}
